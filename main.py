@@ -59,11 +59,17 @@ def main():
         print(MENU)
 
         command = acceptCommand()
-        runCommand(command)
 
-        if command == QUIT: 
+        if command is not None:
+            runCommand(command)
+
+        elif command is None:
+            print('Неверный номер команды.')
+
+        elif command == QUIT:
             print('Работа программы завершена.')
             break
+
 
 
 if __name__ == '__main__':
