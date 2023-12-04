@@ -1,12 +1,5 @@
 import os
 
-
-print(list(os.scandir()))
-
-with open('cui') as file:
-    print(file.read())
-import os
-
 MENU = ' \n' \
        '1. Просмотр каталога \n' \
         '2. На уровень вверх \n' \
@@ -20,12 +13,19 @@ QUIT = '7'
 
 
 def acceptCommand():
+    """
+    The function will check if the function number is valid.
+
+    :return: If the number is correct, then the team number. If the number is incorrect, then NoneType.
+    """
+
     COMMANDS = [str(x) for x in range(1, 8)]
 
     command = input('Выберите пункт меню:')
 
     if command in COMMANDS:
         return command
+
     return None
 
 
@@ -39,8 +39,11 @@ def moveUp():
 
 def moveDown(currentDir):
     subDir = input()
-    if os.path.isdir(currentDir + '/' + subDir):
+    elementPath = os.path.join(currentDir, subDir)
+
+    if os.path.isdir(elementPath):
         os.chdir(subDir)
+
     else:
         print('Имя подкаталога указано неверно!')
 
@@ -54,10 +57,32 @@ def countBytes(path):
 
 
 def findFiles(target, path):
-    pass
+    """
+    The function searches for files whose names contain the query.
+    The search is performed recursively in all subdirectories of the directories that the given directory contains.
+
+    :param target: Search query
+    :param path: Path to the directory to search in
+    :return: List of file paths
+    """
+
+    resPaths = []
+    elements = os.listdir(path)
+
+    for element in elements:
+        elementPath = os.path.join(path, element)
+
+        if os.path.isdir(elementPath):
+            resPaths += findFiles(target, elementPath)
+
+        else:
+            if target in element:
+                resPaths.append(elementPath)
+
+    return resPaths
 
 
-def main(): 
+def main():
     while True: 
         print(os.getcwd())
         print(MENU)
@@ -73,7 +98,6 @@ def main():
         elif command == QUIT:
             print('Работа программы завершена.')
             break
-
 
 
 if __name__ == '__main__':
