@@ -34,11 +34,15 @@ def runCommand(command):
 
 
 def moveUp():
-    pass
+    os.chdir('..')
 
 
 def moveDown(currentDir):
-    pass
+    subDir = input()
+    if os.path.isdir(currentDir + '/' + subDir):
+        os.chdir(subDir)
+    else:
+        print('Имя подкаталога указано неверно!')
 
 
 def countFiles(path):
