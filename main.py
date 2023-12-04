@@ -53,7 +53,16 @@ def countFiles(path):
 
 
 def countBytes(path):
-    pass
+    amnt_Bytes = 0
+    elements = os.listdir(path)
+    for element in elements:
+        elementPath = os.path.join(path, element)
+        if os.path.isfile(elementPath):
+            amnt_Bytes += os.path.getsize(elementPath)
+        else:
+            amnt_Bytes += countBytes(elementPath)
+    
+    return amnt_Bytes
 
 
 def findFiles(target, path):
