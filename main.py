@@ -1,3 +1,7 @@
+"Fisher Daniil 100"
+"Popov Ivan 100"
+"Fedyakin Dmitry 100"
+
 import os
 
 MENU = ' \n' \
@@ -9,12 +13,6 @@ MENU = ' \n' \
         '6. Поиск файла \n' \
         '7. Выход из программы \n'
 
-VIEW = '1'
-UP = '2'
-DOWN = '3'
-NUM = '4'
-SIZE = '5'
-FIND = '6'
 QUIT = '7'
 
 
@@ -34,16 +32,64 @@ def acceptCommand():
 
     return None
 
+def viewDirs(path):
+    """
+    The function return all elements in directory
+
+    param path: Path to the directory to search in
+    return: List of files
+    """
+    return os.listdir(path)
+
 
 def runCommand(command):
-    pass
+    """
+    The function determines by the command number which function needs to be performed
+
+    param command: Number of command
+    """
+
+    path = os.getcwd()
+    if command == '1':
+        print(*viewDirs(path))
+
+    elif command == '2':
+        moveUp()
+
+    elif command == '3':
+        moveDown(path)
+
+    elif command == '4':
+        print(countFiles(path))
+
+    elif command == '5':
+        print(countBytes(path))
+
+    elif command == '6':
+        target = input('Введите запрос для поиска: ')
+        result = findFiles(target, path)
+
+        if result == []:
+            print('Файлы не найдены!')
+        else:
+            print('\n'.join(result))
 
 
 def moveUp():
+    """
+    The function moves to the directory above
+    """
+
     os.chdir('..')
 
 
 def moveDown(currentDir):
+    """
+    The function moves to the directory below
+
+    param currentDir: Current directory
+    """
+
     subDir = input('Введите имя подкаталога: ')
     elementPath = os.path.join(currentDir, subDir)
 
@@ -119,10 +165,10 @@ def findFiles(target, path):
     return resPaths
 
 
-def main():
-    path = os.getcwd()
+def main():  
     while True: 
-        print(os.getcwd())
+        path = os.getcwd()
+        print(path)
         print(MENU)
 
         command = acceptCommand()
@@ -132,22 +178,6 @@ def main():
 
         if command is None:
             print('Неверный номер команды.')
-
-        #if command == VIEW:
-        
-        if command == UP:
-            moveUp()
-
-        if command == DOWN:
-            moveDown(path)
-
-        if command == NUM:
-            print(countFiles(path))
-
-        if command == SIZE:
-            print(countBytes(path))
-
-        #if command == FIND:
 
         if command == QUIT:
             print('Работа программы завершена.')
