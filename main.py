@@ -61,6 +61,7 @@ def countFiles(path):
     :param path: Path to the directory to search in
     :return: Number of files
     """
+    
     count = 0
     elements = os.listdir(path)
     for element in elements:
@@ -73,6 +74,13 @@ def countFiles(path):
 
 
 def countBytes(path):
+    """
+    The function calculates the total volume of files in a directory in Bytes
+
+    :param path: Path to the directory to search in
+    :return: the total volume of files in a directory in Bytes
+    """
+        
     amnt_Bytes = 0
     elements = os.listdir(path)
     for element in elements:
