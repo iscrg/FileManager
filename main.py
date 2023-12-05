@@ -27,7 +27,7 @@ def acceptCommand():
 
     COMMANDS = [str(x) for x in range(1, 8)]
 
-    command = input('Выберите пункт меню:')
+    command = input('Выберите пункт меню: ')
 
     if command in COMMANDS:
         return command
@@ -44,7 +44,7 @@ def moveUp():
 
 
 def moveDown(currentDir):
-    subDir = input()
+    subDir = input('Введите имя подкаталога: ')
     elementPath = os.path.join(currentDir, subDir)
 
     if os.path.isdir(elementPath):
@@ -61,7 +61,7 @@ def countFiles(path):
     :param path: Path to the directory to search in
     :return: Number of files
     """
-    
+
     count = 0
     elements = os.listdir(path)
     for element in elements:
