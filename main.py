@@ -1,18 +1,14 @@
-"Fisher Daniil 100"
-"Popov Ivan 100"
-"Fedyakin Dmitry 100"
+"""
+Fisher Daniil 100
+Popov Ivan 100
+Fedyakin Dmitry 100
+"""
 
 import os
+import ru_local
 
-MENU = ' \n' \
-       '1. Просмотр каталога \n' \
-        '2. На уровень вверх \n' \
-        '3. На уровень вниз \n' \
-        '4. Количество файлов и каталогов \n' \
-        '5. Размер текущего каталога (в байтах) \n' \
-        '6. Поиск файла \n' \
-        '7. Выход из программы \n'
 
+COMMANDS = [str(x) for x in range(1, 8)]
 QUIT = '7'
 
 
@@ -23,35 +19,35 @@ def acceptCommand():
     :return: If the number is correct, then the team number. If the number is incorrect, then NoneType.
     """
 
-    COMMANDS = [str(x) for x in range(1, 8)]
-
-    command = input('Выберите пункт меню: ')
+    command = input(ru_local.CHOOSE_MENU)
 
     if command in COMMANDS:
         return command
 
     return None
 
+
 def viewDirs(path):
     """
-    The function return all elements in directory
+    The function return all elements in directory.
 
-    param path: Path to the directory to search in
-    return: List of files
+    :param path: Path to the directory to search in
+    :return: List of files
     """
+
     return os.listdir(path)
 
 
 def runCommand(command):
     """
-    The function determines by the command number which function needs to be performed
+    The function determines by the command number which function needs to be performed.
 
-    param command: Number of command
+    :param command: Number of command
     """
 
     path = os.getcwd()
     if command == '1':
-        print(*viewDirs(path))
+        print('\n'.join(viewDirs(path)))
 
     elif command == '2':
         moveUp()
@@ -66,18 +62,18 @@ def runCommand(command):
         print(countBytes(path))
 
     elif command == '6':
-        target = input('Введите запрос для поиска: ')
+        target = input(ru_local.TYPE_IN_SEARCH)
         result = findFiles(target, path)
 
-        if result == []:
-            print('Файлы не найдены!')
+        if not result:
+            print(ru_local.FILES_NOT_FOUND)
         else:
             print('\n'.join(result))
 
 
 def moveUp():
     """
-    The function moves to the directory above
+    The function moves to the directory above.
     """
 
     os.chdir('..')
@@ -85,24 +81,24 @@ def moveUp():
 
 def moveDown(currentDir):
     """
-    The function moves to the directory below
+    The function moves to the directory below.
 
-    param currentDir: Current directory
+    :param currentDir: Current directory
     """
 
-    subDir = input('Введите имя подкаталога: ')
+    subDir = input(ru_local.TYPE_IN_CATALOG)
     elementPath = os.path.join(currentDir, subDir)
 
     if os.path.isdir(elementPath):
         os.chdir(subDir)
 
     else:
-        print('Имя подкаталога указано неверно!')
+        print(ru_local.INVALID_NAME)
 
 
 def countFiles(path):
     """
-    The function counts the number of files in the directory
+    The function counts the number of files in the directory.
 
     :param path: Path to the directory to search in
     :return: Number of files
@@ -110,33 +106,40 @@ def countFiles(path):
 
     count = 0
     elements = os.listdir(path)
+
     for element in elements:
         elementPath = os.path.join(path, element)
+
         if os.path.isfile(elementPath):
             count += 1
+
         else:
             count += countFiles(elementPath)
+
     return count
 
 
 def countBytes(path):
     """
-    The function calculates the total volume of files in a directory in Bytes
+    The function calculates the total volume of files in a directory in Bytes.
 
     :param path: Path to the directory to search in
     :return: the total volume of files in a directory in Bytes
     """
         
-    amnt_Bytes = 0
+    amount_bytes = 0
     elements = os.listdir(path)
+
     for element in elements:
         elementPath = os.path.join(path, element)
+
         if os.path.isfile(elementPath):
-            amnt_Bytes += os.path.getsize(elementPath)
+            amount_bytes += os.path.getsize(elementPath)
+
         else:
-            amnt_Bytes += countBytes(elementPath)
+            amount_bytes += countBytes(elementPath)
     
-    return amnt_Bytes
+    return amount_bytes
 
 
 def findFiles(target, path):
@@ -168,8 +171,8 @@ def findFiles(target, path):
 def main():  
     while True: 
         path = os.getcwd()
-        print(path)
-        print(MENU)
+        print(ru_local.CURRENT_DIRECTORY, path)
+        print(ru_local.MENU)
 
         command = acceptCommand()
 
@@ -177,14 +180,12 @@ def main():
             runCommand(command)
 
         if command is None:
-            print('Неверный номер команды.')
+            print(ru_local.INVALID_COMMAND)
 
         if command == QUIT:
-            print('Работа программы завершена.')
+            print(ru_local.SHUTDOWN)
             break
 
 
 if __name__ == '__main__':
     main()
-
-
